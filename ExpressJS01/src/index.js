@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express'); //commonjs
 const configViewEngine = require('./config/viewEngine');
 const apiRoutes = require('./routes/api.js');
+const productRoutes = require('./routes/product.route.js');
 const connection = require('./config/database');
 const { getHomepage } = require('./controllers/homeController.js');
 const cors = require('cors');
@@ -20,6 +21,7 @@ webAPI.get('/', getHomepage);
 app.use('/', webAPI);
 //khai báo route cho API
 app.use('/v1/api', apiRoutes);
+app.use('/v1/api/products', productRoutes);
 
 (async () => {
   try {

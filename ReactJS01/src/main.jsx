@@ -3,43 +3,45 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './styles/global.css';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RegisterPage from './pages/register.jsx';
 import UserPage from './pages/user.jsx';
 import HomePage from './pages/home.jsx';
 import LoginPage from './pages/login.jsx';
 import { AuthWrapper } from './components/context/auth.context.jsx';
 import ForgotPassword from './pages/resetpassword.jsx';
+import ProductPage from './pages/product.jsx';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <HomePage />,
       },
       {
-        path: "user",
-        element: <UserPage />
+        path: 'user',
+        element: <UserPage />,
       },
       {
-        path: "register",
-        element: <RegisterPage />
+        path: 'register',
+        element: <RegisterPage />,
       },
       {
-        path: "login",
-        element: <LoginPage />
+        path: 'login',
+        element: <LoginPage />,
       },
       {
-        path: "reset-password",
-        element: <ForgotPassword />
+        path: 'reset-password',
+        element: <ForgotPassword />,
       },
-    ]
+      {
+        path: 'products',
+        element: <ProductPage />,
+      },
+    ],
   },
 ]);
 
@@ -49,4 +51,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <RouterProvider router={router} />
     </AuthWrapper>
   </React.StrictMode>,
-)
+);
