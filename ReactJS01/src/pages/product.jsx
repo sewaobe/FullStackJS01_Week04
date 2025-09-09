@@ -8,19 +8,16 @@ function ProductPage() {
   const [filters, setFilters] = useState({});
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <h1 style={{ textAlign: 'center', margin: 20 }}>Danh sách sản phẩm</h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 10,
-          flexWrap: 'wrap',
-        }}
-      >
-        <ProductSearch onSearch={(keyword) => setSearchKeyword(keyword)} />
-        <ProductFilter onFilter={(f) => setFilters(f)} />
-      </div>
+
+      {/* Search */}
+      <ProductSearch onSearch={(keyword) => setSearchKeyword(keyword)} />
+
+      {/* Filter */}
+      <ProductFilter onFilter={(f) => setFilters(f)} />
+
+      {/* Product List */}
       <ProductList searchKeyword={searchKeyword} filters={filters} />
     </div>
   );

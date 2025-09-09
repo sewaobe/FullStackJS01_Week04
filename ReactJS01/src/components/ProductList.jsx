@@ -13,19 +13,27 @@ const ProductList = ({ searchKeyword, filters }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async (page, limit, keyword, filters) => {
+  const fetchProducts = async (page = 1, limit = 8) => {
     try {
       setLoading(true);
 
+      const hasKeyword = searchKeyword && searchKeyword.trim() !== '';
+      const hasFilter = filters && Object.keys(filters).length > 0;
+
       const res =
-        (keyword && keyword.trim() !== '') || Object.keys(filters).length > 0
-          ? await searchProductsApi({ keyword, ...filters, page, limit })
+        hasKeyword || hasFilter
+          ? await searchProductsApi({
+              keyword: searchKeyword,
+              ...filters,
+              page,
+              limit,
+            })
           : await getProductsApi(page, limit);
 
       setProducts(res.products || []);
       setPagination({
         page: res.pagination?.page || 1,
-        limit: res.pagination?.limit || 8,
+        limit: res.pagination?.limit || limit,
         total: res.pagination?.total || 0,
       });
     } catch (error) {
@@ -35,13 +43,14 @@ const ProductList = ({ searchKeyword, filters }) => {
     }
   };
 
+  // Reload khi searchKeyword hoặc filters thay đổi → reset page = 1
   useEffect(() => {
-    fetchProducts(1, pagination.limit, searchKeyword, filters);
+    fetchProducts(1, pagination.limit);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchKeyword, filters]);
 
   const handlePageChange = (page, pageSize) => {
-    fetchProducts(page, pageSize, searchKeyword);
+    fetchProducts(page, pageSize);
   };
 
   return (

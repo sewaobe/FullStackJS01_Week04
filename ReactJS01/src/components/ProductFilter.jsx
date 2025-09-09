@@ -14,7 +14,7 @@ export default function ProductFilter({ onFilter }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await getCategoriesApi();
+        const res = await getCategoriesApi(); // backend trả về mảng luôn
         setCategories(res || []);
       } catch (err) {
         console.error('Lỗi lấy danh mục:', err);
