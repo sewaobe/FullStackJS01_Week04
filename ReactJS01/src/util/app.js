@@ -35,9 +35,40 @@ const verifyOtpApi = (email, otp, newPassword) => {
   return axios.post(URL_API, { email, otp, newPassword });
 };
 
-const getProductsApi = (page = 1, limit = 10) => {
+const getProductsApi = async (page = 1, limit = 10) => {
   const URL_API = `/v1/api/products?page=${page}&limit=${limit}`;
-  return axios.get(URL_API);
+  const res = await axios.get(URL_API);
+
+  return res;
+};
+
+const searchProductsApi = async ({
+  keyword,
+  category,
+  minPrice,
+  maxPrice,
+  discount,
+  page = 1,
+  limit = 8,
+} = {}) => {
+  const URL_API = `/v1/api/products/search`;
+
+  const params = { page, limit };
+
+  if (keyword) params.keyword = keyword;
+  if (category) params.category = category;
+  if (minPrice !== undefined) params.minPrice = minPrice;
+  if (maxPrice !== undefined) params.maxPrice = maxPrice;
+  if (discount !== undefined) params.discount = discount;
+
+  const res = await axios.get(URL_API, { params });
+  return res;
+};
+const getCategoriesApi = async () => {
+  const URL_API = '/v1/api/categories';
+  const res = await axios.get(URL_API);
+  console.log('Categories', res);
+  return res; // giả sử backend trả về [{ _id, name }]
 };
 
 export {
@@ -47,4 +78,6 @@ export {
   sendOtpApi,
   verifyOtpApi,
   getProductsApi,
+  searchProductsApi,
+  getCategoriesApi,
 };

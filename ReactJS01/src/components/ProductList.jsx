@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Row, Col, Pagination, Spin } from 'antd';
-import { getProductsApi } from '../util/app';
+import { Card, Row, Col, Pagination, Spin, Empty } from 'antd';
+import { getProductsApi, searchProductsApi } from '../util/app';
 
 const { Meta } = Card;
 
-const ProductList = () => {
+const ProductList = ({ searchKeyword, filters }) => {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -13,16 +13,20 @@ const ProductList = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async (page, limit) => {
+  const fetchProducts = async (page, limit, keyword, filters) => {
     try {
       setLoading(true);
-      const res = await getProductsApi(page, limit);
-      console.log(res);
-      setProducts(res.products);
+
+      const res =
+        (keyword && keyword.trim() !== '') || Object.keys(filters).length > 0
+          ? await searchProductsApi({ keyword, ...filters, page, limit })
+          : await getProductsApi(page, limit);
+
+      setProducts(res.products || []);
       setPagination({
-        page,
-        limit,
-        total: res.pagination.total,
+        page: res.pagination?.page || 1,
+        limit: res.pagination?.limit || 8,
+        total: res.pagination?.total || 0,
       });
     } catch (error) {
       console.error('Lỗi khi lấy sản phẩm:', error);
@@ -32,22 +36,29 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    fetchProducts(pagination.page, pagination.limit);
-  }, []);
+    fetchProducts(1, pagination.limit, searchKeyword, filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKeyword, filters]);
 
   const handlePageChange = (page, pageSize) => {
-    fetchProducts(page, pageSize);
+    fetchProducts(page, pageSize, searchKeyword);
   };
 
   return (
     <div style={{ padding: 24 }}>
       {loading ? (
         <Spin tip='Đang tải sản phẩm...' />
-      ) : (
+      ) : products.length > 0 ? (
         <>
           <Row gutter={[16, 16]}>
             {products.map((product) => (
-              <Col key={product._id} xs={24} sm={12} md={8} lg={6}>
+              <Col
+                key={product._id || product.id}
+                xs={24}
+                sm={12}
+                md={8}
+                lg={6}
+              >
                 <Card
                   hoverable
                   cover={
@@ -80,10 +91,12 @@ const ProductList = () => {
               pageSize={pagination.limit}
               total={pagination.total}
               onChange={handlePageChange}
-              showSizeChanger={false} // Ẩn chọn số item mỗi trang nếu muốn
+              showSizeChanger={false}
             />
           </div>
         </>
+      ) : (
+        <Empty description='Không tìm thấy sản phẩm nào' />
       )}
     </div>
   );

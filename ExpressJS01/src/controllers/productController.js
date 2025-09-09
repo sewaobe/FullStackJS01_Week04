@@ -34,8 +34,43 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+async function searchProducts(req, res) {
+  try {
+    let {
+      keyword,
+      category,
+      minPrice,
+      maxPrice,
+      discount,
+      minViews,
+      page,
+      limit,
+    } = req.query;
+
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const data = await productService.searchProducts({
+      keyword,
+      category,
+      minPrice: minPrice ? parseFloat(minPrice) : undefined,
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+      discount: discount ? discount === 'true' : undefined,
+      minViews: minViews ? parseInt(minViews) : undefined,
+      page,
+      limit,
+    });
+
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error searching products');
+  }
+}
+
 module.exports = {
   getAllProducts,
   createProduct,
   deleteProduct,
+  searchProducts,
 };
