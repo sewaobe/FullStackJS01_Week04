@@ -1,0 +1,18 @@
+[
+  {
+    "_id": { "$oid": "68c8f2a09a1b34169beeb301" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111111" },
+    "text": "Điện thoại dùng tốt, pin khá ổn.",
+    "rating": 4,
+    "createdAt": { "$date": "2025-09-15T11:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "68c8f2a19a1b34169beeb302" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111113" },
+    "text": "Tai nghe chống ồn khá tốt, đeo lâu không đau tai.",
+    "rating": 5,
+    "createdAt": { "$date": "2025-09-15T11:05:00Z" }
+  }
+]

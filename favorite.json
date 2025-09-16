@@ -1,0 +1,14 @@
+[
+  {
+    "_id": { "$oid": "68c8f1a09a1b34169beeb2f1" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111111" },
+    "createdAt": { "$date": "2025-09-15T10:20:00Z" }
+  },
+  {
+    "_id": { "$oid": "68c8f1a19a1b34169beeb2f2" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111114" },
+    "createdAt": { "$date": "2025-09-15T10:25:00Z" }
+  }
+]

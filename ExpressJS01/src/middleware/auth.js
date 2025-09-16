@@ -12,7 +12,9 @@ const auth = (req, res, next) => {
       //verify token
       try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log('>>>>>Decoded', decoded);
         req.user = {
+          _id: decoded._id,
           email: decoded.email,
           name: decoded.name,
           createdBy: 'hoidanit',

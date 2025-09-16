@@ -1,0 +1,32 @@
+[
+  {
+    "_id": { "$oid": "68c8f3a09a1b34169beeb311" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "items": [
+      {
+        "product": { "$oid": "64b000001111111111111111" },
+        "quantity": 1
+      },
+      {
+        "product": { "$oid": "64b000001111111111111112" },
+        "quantity": 1
+      }
+    ],
+    "total": 1898,
+    "status": "paid",
+    "createdAt": { "$date": "2025-09-15T12:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "68c8f3a19a1b34169beeb312" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "items": [
+      {
+        "product": { "$oid": "64b000001111111111111114" },
+        "quantity": 2
+      }
+    ],
+    "total": 240,
+    "status": "paid",
+    "createdAt": { "$date": "2025-09-15T12:10:00Z" }
+  }
+]

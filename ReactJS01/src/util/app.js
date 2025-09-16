@@ -42,6 +42,14 @@ const getProductsApi = async (page = 1, limit = 10) => {
   return res;
 };
 
+// Lấy chi tiết sản phẩm theo ID
+const getDetailProduct = async (productId) => {
+  const URL_API = `/v1/api/products/${productId}`;
+  const res = await axios.get(URL_API);
+  console.log(res);
+  return res; // giả sử backend trả về { product: {...} }
+};
+
 const searchProductsApi = async ({
   keyword,
   category,
@@ -71,6 +79,55 @@ const getCategoriesApi = async () => {
   return res; // giả sử backend trả về [{ _id, name }]
 };
 
+const toggleFavoriteApi = async (productId) => {
+  const URL_API = `/v1/api/products/favorites/${productId}`;
+  // Backend yêu cầu user login → cần gửi kèm token/headers
+  const res = await axios.post(URL_API);
+  return res; // { favorited: true } hoặc { favorited: false }
+};
+
+// Lấy danh sách sản phẩm yêu thích
+const getFavoritesApi = async (page = 1, limit = 10) => {
+  const URL_API = `/v1/api/products/favorites?page=${page}&limit=${limit}`;
+  const res = await axios.get(URL_API);
+  return res; // { data: [...] }
+};
+
+// Lấy danh sách comment theo productId
+const getCommentsApi = async (productId) => {
+  const URL_API = `/v1/api/products/${productId}/comments`;
+  const res = await axios.get(URL_API);
+  return res; // { data: [...] }
+};
+
+// Tạo comment mới
+const createCommentApi = async (productId, content) => {
+  const URL_API = `/v1/api/products/${productId}/comments`;
+  const res = await axios.post(URL_API, { content });
+  return res; // { success: true, comment: {...} }
+};
+const incrementViewApi = async (productId) => {
+  const URL_API = `/v1/api/products/${productId}/view`;
+  try {
+    const res = await axios.post(URL_API);
+    return res; // backend trả về { success: true, viewsCount: 123 }
+  } catch (err) {
+    console.error('Lỗi khi tăng view:', err);
+    return null;
+  }
+};
+
+const getRecentlyViewed = async (page = 1, limit = 10) => {
+  const URL_API = '/v1/api/products/users/me/views';
+  try {
+    const res = await axios.get(URL_API, { params: { page, limit } });
+    return res.data || [];
+  } catch (err) {
+    console.error('Lỗi khi lấy sản phẩm đã xem gần đây:', err);
+    return [];
+  }
+};
+
 export {
   createUserApi,
   loginApi,
@@ -80,4 +137,11 @@ export {
   getProductsApi,
   searchProductsApi,
   getCategoriesApi,
+  toggleFavoriteApi,
+  getFavoritesApi,
+  getDetailProduct,
+  getCommentsApi,
+  createCommentApi,
+  incrementViewApi,
+  getRecentlyViewed,
 };

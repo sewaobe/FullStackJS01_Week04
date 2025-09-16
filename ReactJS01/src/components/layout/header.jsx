@@ -4,6 +4,9 @@ import {
   HomeOutlined,
   SettingOutlined,
   AppstoreOutlined,
+  ShoppingCartOutlined,
+  HeartOutlined,
+  HistoryOutlined, // thêm icon cho recently viewed
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +15,6 @@ import { AuthContext } from '../context/auth.context';
 const Header = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  console.log('>>> check auth: ', auth);
 
   const items = [
     {
@@ -24,6 +26,21 @@ const Header = () => {
       label: <Link to='/products'>Danh sách sản phẩm</Link>,
       key: 'products',
       icon: <AppstoreOutlined />,
+    },
+    {
+      label: <Link to='/cart'>Giỏ hàng</Link>,
+      key: 'cart',
+      icon: <ShoppingCartOutlined />,
+    },
+    {
+      label: <Link to='/favorites'>Yêu thích</Link>,
+      key: 'favorites',
+      icon: <HeartOutlined />,
+    },
+    {
+      label: <Link to='/recentProduct'>Đã xem gần đây</Link>,
+      key: 'recentProduct',
+      icon: <HistoryOutlined />,
     },
     ...(auth?.isAuthenticated
       ? [
@@ -75,7 +92,6 @@ const Header = () => {
   const [current, setCurrent] = useState('home');
 
   const onClick = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
 

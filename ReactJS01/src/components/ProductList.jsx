@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Pagination, Spin, Empty } from 'antd';
-import { getProductsApi, searchProductsApi } from '../util/app';
+import {
+  getProductsApi,
+  searchProductsApi,
+  toggleFavoriteApi,
+  getFavoritesApi, // 👈 thêm API
+} from '../util/app';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -12,6 +19,25 @@ const ProductList = ({ searchKeyword, filters }) => {
     total: 0,
   });
   const [loading, setLoading] = useState(false);
+
+  const [favoriteIds, setFavoriteIds] = useState(new Set());
+
+  const navigate = useNavigate();
+  // 🔥 Gọi API lấy danh sách yêu thích khi component mount
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const res = await getFavoritesApi(1, 100);
+        console.log(res);
+        // giả sử res.data = { favorites: [ { product: { _id, name, ... } } ] }
+        const ids = res.data.map((f) => f._id);
+        setFavoriteIds(new Set(ids));
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách yêu thích:', err);
+      }
+    };
+    fetchFavorites();
+  }, []);
 
   const fetchProducts = async (page = 1, limit = 8) => {
     try {
@@ -53,6 +79,23 @@ const ProductList = ({ searchKeyword, filters }) => {
     fetchProducts(page, pageSize);
   };
 
+  const handleToggleFavorite = async (productId) => {
+    try {
+      const res = await toggleFavoriteApi(productId);
+      setFavoriteIds((prev) => {
+        const newSet = new Set(prev);
+        if (res.favorited) {
+          newSet.add(productId);
+        } else {
+          newSet.delete(productId);
+        }
+        return newSet;
+      });
+    } catch (err) {
+      console.error('Lỗi khi toggle yêu thích:', err);
+    }
+  };
+
   return (
     <div style={{ padding: 24 }}>
       {loading ? (
@@ -70,6 +113,9 @@ const ProductList = ({ searchKeyword, filters }) => {
               >
                 <Card
                   hoverable
+                  onClick={() =>
+                    navigate(`/products/${product._id || product.id}`)
+                  } // 👈 thêm
                   cover={
                     <img
                       alt={product.name}
@@ -77,6 +123,25 @@ const ProductList = ({ searchKeyword, filters }) => {
                       style={{ height: 200, objectFit: 'cover' }}
                     />
                   }
+                  actions={[
+                    favoriteIds.has(product._id || product.id) ? (
+                      <HeartFilled
+                        key='fav'
+                        style={{ color: 'red', fontSize: 20 }}
+                        onClick={() =>
+                          handleToggleFavorite(product._id || product.id)
+                        }
+                      />
+                    ) : (
+                      <HeartOutlined
+                        key='fav'
+                        style={{ fontSize: 20 }}
+                        onClick={() =>
+                          handleToggleFavorite(product._id || product.id)
+                        }
+                      />
+                    ),
+                  ]}
                 >
                   <Meta
                     title={product.name}

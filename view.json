@@ -1,0 +1,23 @@
+[
+  {
+    "_id": { "$oid": "68c8f4a09a1b34169beeb321" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111116" },
+    "sessionId": "sess-001",
+    "createdAt": { "$date": "2025-09-15T13:00:00Z" }
+  },
+  {
+    "_id": { "$oid": "68c8f4a19a1b34169beeb322" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111117" },
+    "sessionId": "sess-001",
+    "createdAt": { "$date": "2025-09-15T13:05:00Z" }
+  },
+  {
+    "_id": { "$oid": "68c8f4a29a1b34169beeb323" },
+    "user": { "$oid": "68c8b2b09a1b34169beeb2aa" },
+    "product": { "$oid": "64b000001111111111111113" },
+    "sessionId": "sess-001",
+    "createdAt": { "$date": "2025-09-15T13:10:00Z" }
+  }
+]

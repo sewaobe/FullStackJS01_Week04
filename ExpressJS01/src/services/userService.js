@@ -44,6 +44,7 @@ const loginService = async (email, password) => {
       } else {
         //create an access token
         const payload = {
+          _id: user._id,
           email: user.email,
           name: user.name,
         };
@@ -89,7 +90,7 @@ async function updatePassword(email, newPassword) {
   try {
     const result = await User.updateOne(
       { email: email },
-      { $set: { password: newPassword } }
+      { $set: { password: newPassword } },
     );
     return result;
   } catch (err) {
@@ -103,5 +104,5 @@ module.exports = {
   loginService,
   getUserService,
   findByEmail,
-  updatePassword
+  updatePassword,
 };

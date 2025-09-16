@@ -42,7 +42,7 @@ export default function ProductFilter({ onFilter }) {
   };
 
   return (
-    <Space wrap style={{ marginBottom: 20 }}>
+    <Space wrap style={{ marginBottom: 20, marginLeft: '25%' }}>
       <Select
         placeholder='Chọn danh mục'
         value={category || undefined}
